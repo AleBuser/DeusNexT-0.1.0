@@ -18,7 +18,7 @@ To get started implementing your own trading startegy download the code and writ
 You can now run the testRun.py script to mesure the performance of your strategy!
 
 ### Return values:
-In ordert o be compatible with the rest of the code your engines need to return values the right values, these are:
+In ordert o be compatible with the rest of the code your engines need to return the right values, these are:
 ```
 MarketEngine -> returns the integer value of the array-index of the startegy to be used for the current candle
 ```
@@ -34,6 +34,9 @@ ExitEngine -> returns either "EXIT" or "HOLD"
 
 ## TO-DO
 -Currently the Trader.py only supports StopLoss, TODO: implementing a StopProfit to take partial profits
+
 -Currently the Trader.py only supports Market Orders, TODO: implementing teh option for LimitOrders
+
 -Currently the testAnalyzer.py asumes 100% of aviable capital is invested in each trade, TODO: partial investment
+
 -Other cool stuff
