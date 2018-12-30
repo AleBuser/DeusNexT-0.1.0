@@ -27,7 +27,7 @@ interval  = "1h"
 Trader = binanceTrader(client, pair)
 Stops = Stops(TestRun = False, traderInstance = Trader)
 
-# last params: True is TEST 
+# init Startegy
 Strategy = Strategy(client, pair, interval, TestRun = False, StopsEngineInstance = Stops)
 # get initial state of strategy
 lastState = Strategy.getLastState()
