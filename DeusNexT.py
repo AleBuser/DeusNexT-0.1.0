@@ -6,8 +6,8 @@ import time
 import pandas as pd
 import sys
 
-#add all startegies to importable
-sys.path.insert(0, 'strategies')
+#add all engines to importable
+sys.path.insert(0, 'engines')
 
 ### import modules ###
 from Strategy import Strategy
