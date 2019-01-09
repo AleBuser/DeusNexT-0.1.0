@@ -43,9 +43,10 @@ Candles["Low"] = Candles["Low"].astype(float)
 Candles["Open time"] = Candles["Open time"].astype(float)/1000
 
 
-
+# initialize Stop engine
 Stops  = Stops(TestRun = True, traderInstance = None)
 
+#initialize Strategy
 Strategy = Strategy(_client = None, _pair = pair, _interval = interval, TestRun = True, StopsEngineInstance = Stops)
 
 #get initial balance from initial price of 1 unit
