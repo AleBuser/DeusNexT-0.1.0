@@ -37,6 +37,4 @@ ExitEngine -> returns either "EXIT" or "HOLD"
 
 -Currently the Trader.py only supports Market Orders, TODO: implementing teh option for LimitOrders
 
--Currently the testAnalyzer.py asumes 100% of aviable capital is invested in each trade, TODO: partial investment
-
 -Other cool stuff
