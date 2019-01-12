@@ -43,10 +43,9 @@ Candles["Low"] = Candles["Low"].astype(float)
 Candles["Open time"] = Candles["Open time"].astype(float)/1000
 
 
-# initialize Stop engine
+
 Stops  = Stops(TestRun = True, traderInstance = None)
 
-#initialize Strategy
 Strategy = Strategy(_client = None, _pair = pair, _interval = interval, TestRun = True, StopsEngineInstance = Stops)
 
 #get initial balance from initial price of 1 unit
@@ -56,7 +55,11 @@ initialBalance = Candles["Open"][0]
 tradingFee = 1.00000 - 0.001000 # 0.99925
 
 #init analyzer with first price and trading fee 
-analyzer = testAnalyzer(InitialBalance = initialBalance, TradingFee = tradingFee, showProfitHistograms = True, showBaseBalance = True )
+analyzer = testAnalyzer(InitialBalance = initialBalance, TradingFee = tradingFee,
+                         showProfitHistograms = False, 
+                          showBaseBalance = True,
+                           showAggregate = True,
+                            showLinear = True )
 
 #start looping throu Candles
 for i,Candle0 in Candles.iterrows():

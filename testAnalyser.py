@@ -26,6 +26,10 @@ class testAnalyzer():
     highestGain = 0;
     highestLost = 0;
 
+    #keep track of capital if investments are done linearly
+    linearCapital = 0
+    linearCapitalToInvest = 0
+
     #amount of positive/negative trades
     tradesGood = [];
     tradesBad = [];
@@ -36,7 +40,11 @@ class testAnalyzer():
 
     showProfit = True
 
-    def __init__(self,InitialBalance,TradingFee, showProfitHistograms, showBaseBalance):
+    def __init__(self, InitialBalance, TradingFee,
+                    showProfitHistograms,
+                     showBaseBalance,
+                      showAggregate,
+                       showLinear):
 
         self.fee = TradingFee
 
@@ -58,12 +66,18 @@ class testAnalyzer():
 
         self.showProfit = showBaseBalance
         self.showCrypto = showBaseBalance
+        self.showAggregate = showAggregate
+        self.showLinear = showLinear
+
+        self.linearCapital = _capital
+        self.linearCapitalToInvest = _capital * 0.75
 
         #init series
         self.BaseBalances = pd.DataFrame(columns=['Base'])
         self.QuoteBalances = pd.DataFrame(columns=['Quote'])
         self.prices = pd.DataFrame(columns=['Price'])
         self.ProfitMA = pd.DataFrame(columns=["Profir"])
+        self.linCap = pd.DataFrame(columns=["LinCapital"])
 
     def addToAnalysis(self,_signal,_price, _time):
 
@@ -82,6 +96,7 @@ class testAnalyzer():
         self.QuoteBalances = self.QuoteBalances.append({'Quote':max(self.quoteBalance, self.baseBalance * _price)}, ignore_index=True)
         self.BaseBalances = self.BaseBalances.append({'Base': max(self.baseBalance, self.quoteBalance / _price)}, ignore_index=True)
         self.prices = self.prices.append({'Price':_price}, ignore_index=True)
+        self.linCap = self.linCap.append({'LinCapital': self.linearCapital}, ignore_index=True)
 
         #if signal is BUY simulate a buy order 
         if _signal == "BUY":
@@ -122,6 +137,8 @@ class testAnalyzer():
             #print profit made on this trade
             Profit = ((self.quoteBalance / self.quoteBalanceBefore)*100)-100
 
+            self.linearCapital += (self.linearCapitalToInvest * (Profit/100) )
+
             print "Profit on trade: " +  str(Profit) + "%"
 
             #check if profit is positive or negative and add to list of Good/Bad trades
@@ -129,6 +146,7 @@ class testAnalyzer():
                 self.tradesGood.append((( self.quoteBalance / self.quoteBalanceBefore) * 100) - 100);
             else:
                 self.tradesBad.append(((self.quoteBalance / self.quoteBalanceBefore) * 100) - 100)
+                
         self.ProfitMA = self.ProfitMA.append({'Profit':Profit}, ignore_index=True)
 
 
@@ -187,7 +205,13 @@ class testAnalyzer():
             color = 'tab:red'
             ax1.set_xlabel('time (s)')
             ax1.plot(_time,self.prices,'b',label="Asset Price")
-            ax1.plot(_time,self.QuoteBalances["Quote"],'r',label="Capital")
+            
+            if self.showAggregate == True:
+                ax1.plot(_time,self.QuoteBalances["Quote"],'r',label="AggregatedCapital")
+
+            if self.showLinear == True:
+                ax1.plot(_time,self.linCap["LinCapital"],'k',label="LinearCapital")
+
             ax1.tick_params(axis='y', labelcolor=color)
             ax1.legend()
 
