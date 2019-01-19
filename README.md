@@ -35,6 +35,6 @@ ExitEngine -> returns either "EXIT" or "HOLD"
 ## TO-DO
 -Currently the Trader.py only supports StopLoss, TODO: implementing a StopProfit to take partial profits
 
--Currently the Trader.py only supports Market Orders, TODO: implementing teh option for LimitOrders
+-Currently the Trader.py only supports Market Orders, TODO: implementing the option for LimitOrders
 
 -Other cool stuff
