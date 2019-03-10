@@ -10,7 +10,7 @@ import sys
 sys.path.insert(0, 'engines')
 
 #import modules
-from Strategy import Strategy
+from DeusNexT import DeusNexT
 from Stops import Stops
 from testAnalyser import testAnalyzer
 
@@ -20,10 +20,10 @@ client = Client("", "")
 #chose trading pair, interval and testing start
 pair = 'BTCUSDT'
 interval = '30m'
-analyzeDataFrom = "2017.8.17"
+analyzeDataFrom = "2018.12.30"
 
 #get data from Binance
-print "fetching Binance data...."
+print ("fetching Binance data....")
 coinData = client.get_historical_klines(symbol = pair , interval = interval, start_str = analyzeDataFrom)#, end_str= "2018.4.1")
 
 #format data into table of Candles
@@ -42,24 +42,24 @@ Candles["High"] = Candles["High"].astype(float)
 Candles["Low"] = Candles["Low"].astype(float)
 Candles["Open time"] = Candles["Open time"].astype(float)/1000
 
+#init digester
+#last param is: True for Production, False for testing
 
-
-Stops  = Stops(TestRun = True, traderInstance = None)
-
-Strategy = Strategy(_client = None, _pair = pair, _interval = interval, TestRun = True, StopsEngineInstance = Stops)
+Stops  = Stops(True, None, None)
+Strategy = DeusNexT(None,pair,interval,True,Stops)
 
 #get initial balance from initial price of 1 unit
 initialBalance = Candles["Open"][0] 
 
 #set trading fee multiplyer
-tradingFee = 1.00000 - 0.001000 # 0.99925
+tradingFee = 1.00000 - 0.000750 # 0.99925
 
 #init analyzer with first price and trading fee 
-analyzer = testAnalyzer(InitialBalance = initialBalance, TradingFee = tradingFee,
-                         showProfitHistograms = False, 
-                          showBaseBalance = True,
-                           showAggregate = True,
-                            showLinear = True )
+analyzer = testAnalyzer( initialBalance,tradingFee,
+                         _showProfit = False,
+                          _showCrypto = False,
+                           _showAggregate = True,
+                            _showLinear = True)
 
 #start looping throu Candles
 for i,Candle0 in Candles.iterrows():
@@ -70,32 +70,34 @@ for i,Candle0 in Candles.iterrows():
     #take current time
     timestamp = Candle0["Open time"]
 
-    #get Result from Strategy
+
     Signal, StopLoss, StopProfit = Strategy.digestCandle(Candle0)
 
     if Signal == "BUY":
-        #set Stops
         Stops.SetStopLoss(StopLoss)
         Stops.SetStopProfit(StopProfit)
 
-        #add to signals for ater analisys
         analyzer.addToAnalysis(Signal, price, timestamp)
 
     elif Signal == "SELL":
-        #resetStops
         Stops.SetStopLoss(0.0)
         Stops.SetStopProfit(999999999)
 
-        #if SELL signal comes from stop loss hit use stopLoss price as sell price, not current price
         if StopLoss != None:
             analyzer.addToAnalysis(Signal, StopLoss, timestamp)
         else:
             analyzer.addToAnalysis(Signal, price, timestamp)
 
-    #add HOLD signal to analysis
+
     else: 
         analyzer.addToAnalysis(Signal, price, timestamp)
 
+    
+
+
+        
+
+#show analysis
 analyzer.analyze(time)
 
     

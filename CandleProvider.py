@@ -80,7 +80,7 @@ class dataProvider:
 
     def __init__(self, _client,  _pair,  _interval, _frontRun):
 
-        print "initiating Candle Provider"
+        print ("initiating Candle Provider")
 
         self.client = _client
         self.interval = _interval
@@ -122,7 +122,7 @@ class dataProvider:
 
         self.nextCandleOpens = float(currCandle["Open time"] / 1000) + self.intervalInSeconds
         
-        print "initiated Candle Provider"
+        print ("initiated Candle Provider")
         
 
     

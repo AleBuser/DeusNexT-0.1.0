@@ -8,7 +8,7 @@ class Stops:
     trader = None
 
 
-    def CheckStopLoss(self, candle): 
+    def CheckStopLoss(self, candle):
 
 
         if candle["Low"] <= self.currentStopLoss:
@@ -34,7 +34,7 @@ class Stops:
             self.currentStopLoss = price
             if price != 0.0:
                 self.trader.newStopLoss(price)
-                print ""
+                print ("")
             else:
                 self.currentStopLoss = 0.0
                 self.trader.cancelLastOrder()
