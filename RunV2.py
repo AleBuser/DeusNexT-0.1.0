@@ -15,7 +15,6 @@ from DeusNexT import DeusNexT
 from traderV2 import binanceTrader
 from CandleProvider import dataProvider
 from Stops import Stops
-from TEST import TEST
 
 from W3CR import W3CR
 
