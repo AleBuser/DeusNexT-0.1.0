@@ -1,4 +1,12 @@
-# DeusNexT-0.1.0 Alpha
+# DeusNexT-0.2.0 Alpha
+
+## V2 changeLog
+### Web3 Commit-Reveal
+In the second version I added timestamping of every trade on the Ethereum Ropsten Test-net using the W3CR library I built.
+With Commit Reveal all trade signals are hashed together with a random key and published through Ethereum transactions to the blockchain. A second transaction is then sent with the un-hashes data revealing the information. To verify the validity of the commit transaction one only has tho hash the reval and comapre it with the commit. This process is automatized in W3CR. 
+
+###
+Other minor changes have been made to the Trader and Stops components to increase stability and raliablity
 
 ## What it is
 DeusNexT is a framework for automating trading strategies, it should allow developers to focus on the implementation and optimization of the trading strategies without needing to worry about the periferical tasks like building testing tools, performance visualization, data formatting ecc.
